@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.restfulbackend.modules.sys.dao.TextMessageMapper">
+    <resultMap id="TextMessageBaseResultMap" type="com.restfulbackend.modules.sys.entity.TextMessage">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="msg" property="msg" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <sql id="Base_Column_List">id, msg, created_at</sql>
+    <select id="selectByPrimaryKey"
+            resultMap="TextMessageBaseResultMap"
+            parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_text_message
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyProperty="id"
+            parameterType="com.restfulbackend.modules.sys.entity.TextMessage">
+        insert into sys_text_message(msg)
+        values (#{msg,jdbcType=VARCHAR})
+    </insert>
+</mapper>

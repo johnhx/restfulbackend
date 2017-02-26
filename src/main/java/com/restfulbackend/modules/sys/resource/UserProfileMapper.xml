@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.restfulbackend.modules.sys.dao.UserProfileMapper">
+    <resultMap id="UserProfileBaseResultMap" type="com.restfulbackend.modules.sys.entity.UserProfile">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="first_name" property="firstName" jdbcType="VARCHAR"/>
+        <result column="last_name" property="lastName" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="hobby" property="hobby" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="VARCHAR"/>
+        <result column="updated_at" property="updatedAt" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, avatar, email, first_name, last_name, nick_name, hobby, created_at
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="UserProfileBaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user_profile
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByEmail" resultMap="UserProfileBaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user_profile
+        where email = #{email,jdbcType=BIGINT}
+    </select>
+    <!--<select id="selectByUserId" resultMap="UserProfileBaseResultMap" parameterType="java.lang.Long">-->
+        <!--select-->
+        <!--<include refid="Base_Column_List"/>-->
+        <!--from sys_user_profile-->
+        <!--where user_id = #{user_id,jdbcType=BIGINT}-->
+    <!--</select>-->
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sys_user_profile
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--<insert id="insert" parameterType="com.restfulbackend.modules.sys.entity.UserProfile" useGeneratedKeys="true"-->
+            <!--keyProperty="id">-->
+        <!--insert into sys_user_profile (user_id, avatar)-->
+        <!--values (#{userId,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR})-->
+    <!--</insert>-->
+
+    <update id="update"
+            parameterType="com.restfulbackend.modules.sys.entity.UserProfile">
+        update sys_user_profile set
+        avatar = #{avatar, jdbcType=VARCHAR},
+        email = #{email, jdbcType=VARCHAR},
+        first_name = #{firstName, jdbcType=VARCHAR},
+        last_name = #{lastName, jdbcType=VARCHAR},
+        nick_name = #{nickName, jdbcType=VARCHAR},
+        hobby = #{hobby, jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateAvatar"
+            parameterType="com.restfulbackend.modules.sys.entity.UserProfile">
+        update sys_user_profile set avatar = #{avatar, jdbcType=VARCHAR} where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

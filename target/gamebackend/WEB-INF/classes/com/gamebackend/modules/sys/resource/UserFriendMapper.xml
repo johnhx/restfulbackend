@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.restfulbackend.modules.sys.dao.UserFriendMapper">
+    <resultMap id="UserFriendBaseResultMap" type="com.restfulbackend.modules.sys.entity.UserFriend">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="owner_uuid" property="ownerUuid" jdbcType="VARCHAR"/>
+        <result column="friend_uuid" property="friendUuid" jdbcType="VARCHAR"/>
+        <result column="friend_remark" property="friendRemark" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <resultMap id="UserFriendSelectResultMap" type="com.restfulbackend.modules.sys.entity.UserFriendList" autoMapping="true">
+        <id property="ownerUuid" column="owner_uuid" javaType="string"></id>
+        <collection property="userFriends" ofType="com.restfulbackend.modules.sys.entity.UserFriend" autoMapping="true">
+            <id property="id" column="id"></id>
+            <result column="owner_uuid" property="ownerUuid"></result>
+            <result column="friend_uuid" property="friendUuid"></result>
+            <result column="friend_remark" property="friendRemark"></result>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">id, owner_uuid, friend_uuid, friend_remark</sql>
+    <select id="selectByPrimaryKey"
+            resultMap="UserFriendBaseResultMap"
+            parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user_friend
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByOwner"
+            resultMap="UserFriendSelectResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user_friend
+        where owner_uuid = #{ownerUuid,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByBlock"
+            resultMap="UserFriendBaseResultMap"
+            parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM sys_user_friend
+        WHERE friend_uuid = #{uuid, jdbcType=VARCHAR}
+    </select>
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyProperty="id"
+            parameterType="com.restfulbackend.modules.sys.entity.UserBlock">
+        insert into sys_user_friend(owner_uuid, friend_uuid)
+        values (#{ownerUuid,jdbcType=VARCHAR}, #{friendUuid,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delete"
+            parameterType="com.restfulbackend.modules.sys.entity.UserBlock">
+        DELETE * FROM sys_user_friend
+        WHERE owner_uuid = #{ownerUuid, jdbcType=VARCHAR} AND friend_uuid = #{blockUuid, jdbcType=VARCHAR}
+    </delete>
+</mapper>

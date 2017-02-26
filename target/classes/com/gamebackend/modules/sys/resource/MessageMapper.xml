@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.restfulbackend.modules.sys.dao.MessageMapper">
+    <resultMap id="MessageBaseResultMap" type="com.restfulbackend.modules.sys.entity.Message">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="from_id" property="fromId" jdbcType="BIGINT"/>
+        <result column="to_id" property="toId" jdbcType="BIGINT"/>
+        <result column="to_type_id" property="toTypeId" jdbcType="BIGINT"/>
+        <result column="msg_type_id" property="msgTypeId" jdbcType="BIGINT"/>
+        <result column="msg_id" property="msgId" jdbcType="BIGINT"/>
+        <result column="created_at" property="createdAt" />
+    </resultMap>
+
+    <resultMap id="SelectByFromResultMap" type="com.restfulbackend.modules.sys.entity.MessageByFrom" autoMapping="true">
+        <id property="fromId" column="from_id"></id>
+        <collection property="messages" ofType="com.restfulbackend.modules.sys.entity.Message" autoMapping="true">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="from_id" property="fromId" jdbcType="BIGINT"/>
+            <result column="to_id" property="toId" jdbcType="BIGINT"/>
+            <result column="to_type_id" property="toTypeId" jdbcType="BIGINT"/>
+            <result column="msg_type_id" property="msgTypeId" jdbcType="BIGINT"/>
+            <result column="msg_id" property="msgId" jdbcType="BIGINT"/>
+            <result column="created_at" property="createdAt" />
+        </collection>
+    </resultMap>
+
+    <resultMap id="SelectByToResultMap" type="com.restfulbackend.modules.sys.entity.MessageByTo" autoMapping="true">
+        <id property="toId" column="to_id"></id>
+        <collection property="messages" ofType="com.restfulbackend.modules.sys.entity.Message" autoMapping="true">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="from_id" property="fromId" jdbcType="BIGINT"/>
+            <result column="to_id" property="toId" jdbcType="BIGINT"/>
+            <result column="to_type_id" property="toTypeId" jdbcType="BIGINT"/>
+            <result column="msg_type_id" property="msgTypeId" jdbcType="BIGINT"/>
+            <result column="msg_id" property="msgId" jdbcType="BIGINT"/>
+            <result column="created_at" property="createdAt" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">id, from_id, to_id, to_type_id, msg_type_id, msg_id, created_at</sql>
+    <select id="selectByPrimaryKey"
+            resultMap="MessageBaseResultMap"
+            parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_message
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByFrom"
+            resultMap="SelectByFromResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_message
+        where from_id = #{fromId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByTo"
+            resultMap="SelectByToResultMap"
+            parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"></include>
+        FROM sys_message
+        WHERE to_id = #{toId, jdbcType=BIGINT}
+    </select>
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyProperty="id"
+            parameterType="com.restfulbackend.modules.sys.entity.Message">
+        insert into sys_message(from_id, to_id, to_type_id, msg_type_id, msg_id)
+        values (#{fromId,jdbcType=BIGINT}, #{toId,jdbcType=BIGINT}, #{toTypeId,jdbcType=BIGINT}, #{msgTypeId,jdbcType=BIGINT}, #{msgId,jdbcType=BIGINT})
+    </insert>
+</mapper>
